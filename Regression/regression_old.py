@@ -2,6 +2,11 @@
 from matplotlib.font_manager import FontProperties
 import matplotlib.pyplot as plt
 import numpy as np
+import logging
+
+logging.basicConfig()
+logger = logging.getLogger('default')
+logger.setLevel(logging.DEBUG)
 
 def loadDataSet(fileName):
 	"""
@@ -88,14 +93,32 @@ def plotRegression():
 	"""
 	xArr, yArr = loadDataSet('ex0.txt')									#加载数据集
 	ws = standRegres(xArr, yArr)										#计算回归系数
+	# logger.info(xArr)
+	# logger.info(yArr)
+	# logger.info(ws)
+
 	xMat = np.mat(xArr)													#创建xMat矩阵
 	yMat = np.mat(yArr)													#创建yMat矩阵
 	xCopy = xMat.copy()													#深拷贝xMat矩阵
 	xCopy.sort(0)														#排序
+	
 	yHat = xCopy * ws 													#计算对应的y值
+
 	fig = plt.figure()
 	ax = fig.add_subplot(111)											#添加subplot
-	ax.plot(xCopy[:, 1], yHat, c = 'red')								#绘制回归曲线
+	
+	print(xCopy)
+	print("---")
+	print(xCopy[:, 1])
+	print("---")
+	print(xCopy[:, 1].flatten())
+	print("---")
+	print(xCopy[:, 1].flatten().A[0])
+	print("---")
+
+	# ax.plot(xCopy[:, 1], yHat, c = 'red')								#绘制回归曲线
+	ax.plot(xCopy[:, 1].flatten().A[0], yHat.flatten().A[0], c = 'red')	
+
 	ax.scatter(xMat[:,1].flatten().A[0], yMat.flatten().A[0], s = 20, c = 'blue',alpha = .5)				#绘制样本点
 	plt.title('DataSet')												#绘制title
 	plt.xlabel('X')
@@ -113,7 +136,7 @@ def plotlwlrRegression():
 	Modify:
 		2017-11-15
 	"""
-	font = FontProperties(fname=r"c:\windows\fonts\simsun.ttc", size=14)
+	font = FontProperties(size=14)
 	xArr, yArr = loadDataSet('ex0.txt')									#加载数据集
 	yHat_1 = lwlrTest(xArr, xArr, yArr, 1.0)							#根据局部加权线性回归计算yHat
 	yHat_2 = lwlrTest(xArr, xArr, yArr, 0.01)							#根据局部加权线性回归计算yHat
@@ -124,17 +147,33 @@ def plotlwlrRegression():
 	xSort = xMat[srtInd][:,0,:]
 	fig, axs = plt.subplots(nrows=3, ncols=1,sharex=False, sharey=False, figsize=(10,8))										
 
-	axs[0].plot(xSort[:, 1], yHat_1[srtInd], c = 'red')						#绘制回归曲线
-	axs[1].plot(xSort[:, 1], yHat_2[srtInd], c = 'red')						#绘制回归曲线
-	axs[2].plot(xSort[:, 1], yHat_3[srtInd], c = 'red')						#绘制回归曲线
+	print(xSort)
+	print(xSort[:, 1])
+	print(xSort[:, 1].flatten())
+	print(xSort[:, 1].flatten().A[0])
+
+	print("---")
+	print(srtInd)
+	
+	print("---")
+	print(yHat_1)
+	print("---")
+	print(yHat_1[srtInd])
+	print("---")
+	print(yHat_1[srtInd].flatten())
+
+
+	axs[0].plot(xSort[:, 1].flatten().A[0], yHat_1[srtInd].flatten(), c = 'red')						#绘制回归曲线
+	axs[1].plot(xSort[:, 1].flatten().A[0], yHat_2[srtInd].flatten(), c = 'red')						#绘制回归曲线
+	axs[2].plot(xSort[:, 1].flatten().A[0], yHat_3[srtInd].flatten(), c = 'red')						#绘制回归曲线
 	axs[0].scatter(xMat[:,1].flatten().A[0], yMat.flatten().A[0], s = 20, c = 'blue', alpha = .5)				#绘制样本点
 	axs[1].scatter(xMat[:,1].flatten().A[0], yMat.flatten().A[0], s = 20, c = 'blue', alpha = .5)				#绘制样本点
 	axs[2].scatter(xMat[:,1].flatten().A[0], yMat.flatten().A[0], s = 20, c = 'blue', alpha = .5)				#绘制样本点
 
 	#设置标题,x轴label,y轴label
-	axs0_title_text = axs[0].set_title(u'局部加权回归曲线,k=1.0',FontProperties=font)
-	axs1_title_text = axs[1].set_title(u'局部加权回归曲线,k=0.01',FontProperties=font)
-	axs2_title_text = axs[2].set_title(u'局部加权回归曲线,k=0.003',FontProperties=font)
+	axs0_title_text = axs[0].set_title(u'局部加权回归曲线,k=1.0')
+	axs1_title_text = axs[1].set_title(u'局部加权回归曲线,k=0.01')
+	axs2_title_text = axs[2].set_title(u'局部加权回归曲线,k=0.003')
 
 	plt.setp(axs0_title_text, size=8, weight='bold', color='red')  
 	plt.setp(axs1_title_text, size=8, weight='bold', color='red')  
@@ -195,3 +234,5 @@ def lwlrTest(testArr, xArr, yArr, k=1.0):
 
 if __name__ == '__main__':
 	plotlwlrRegression()
+	# plotRegression()
+	# plotDataSet()

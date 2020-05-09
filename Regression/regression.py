@@ -85,7 +85,7 @@ def plotwMat():
 	Modify:
 		2017-11-20
 	"""
-	font = FontProperties(fname=r"c:\windows\fonts\simsun.ttc", size=14)
+	font = FontProperties(size=14)
 	abX, abY = loadDataSet('abalone.txt')
 	redgeWeights = ridgeTest(abX, abY)
 	fig = plt.figure()
@@ -184,15 +184,14 @@ def plotstageWiseMat():
 	Modify:
 		2017-12-03
 	"""
-	font = FontProperties(fname=r"c:\windows\fonts\simsun.ttc", size=14)
 	xArr, yArr = loadDataSet('abalone.txt')
 	returnMat = stageWise(xArr, yArr, 0.005, 1000)
 	fig = plt.figure()
 	ax = fig.add_subplot(111)
 	ax.plot(returnMat)	
-	ax_title_text = ax.set_title(u'前向逐步回归:迭代次数与回归系数的关系', FontProperties = font)
-	ax_xlabel_text = ax.set_xlabel(u'迭代次数', FontProperties = font)
-	ax_ylabel_text = ax.set_ylabel(u'回归系数', FontProperties = font)
+	ax_title_text = ax.set_title(u'前向逐步回归:迭代次数与回归系数的关系')
+	ax_xlabel_text = ax.set_xlabel(u'迭代次数')
+	ax_ylabel_text = ax.set_ylabel(u'回归系数')
 	plt.setp(ax_title_text, size = 15, weight = 'bold', color = 'red')
 	plt.setp(ax_xlabel_text, size = 10, weight = 'bold', color = 'black')
 	plt.setp(ax_ylabel_text, size = 10, weight = 'bold', color = 'black')
